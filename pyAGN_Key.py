@@ -29,12 +29,12 @@ post_url = 'http://dark.physics.ucdavis.edu/~hal/cgi-bin/agnagent/agnkeymain.cgi
 
 with requests.Session() as s:
     # login to AGN Key website, unfortunately you cannot test this since you do not have a password and username.
-    response = s.post(post_url, auth = ('mhlabathe', 'mhlabathe26'))
+    response = s.post(post_url, auth = ('your_username', 'your_password'))
 
     # If the status code is 200, continue
     if response.status_code == requests.codes.ok:
         # Pass response to BeautifulSoup to deal with the HTML document
-        soup = BeautifulSoup(response.text, 'html5lib')#, 'lxml')
+        soup = BeautifulSoup(response.text, 'html5lib')
         
         # Empty lists to store data, these are the column names from the website in order
         agn_names, ra, dec, agn_type, z, n_nights, last_obs = [], [], [], [], [], [], []
@@ -82,7 +82,7 @@ with requests.Session() as s:
         
         df = df[df['DEC'].notna()] # take the rows where DEC is not NA
 
-        # Load AGN with existing reverberation mapping mass estimates
+        # Load AGNs with existing reverberation mapping mass estimates
         from_db = np.loadtxt('AGN_BH_Mass_Database.dat', usecols = 0, unpack = True, dtype = str).tolist()
         
         # Taken from LCOGT_AGN_KP on github
