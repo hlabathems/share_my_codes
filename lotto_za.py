@@ -16,11 +16,11 @@ import sys
 warnings.filterwarnings('ignore')
 
 # Define a function that randomly draws six numbers from a set of lotto numbers based on given probability. This will be used to predict the upcoming draw.
-def draw():
+def draw(p):
 
     lotto_numbers = np.arange(1, 52 + 1, 1) # Generate a set of 1 to 52 numbers
 
-    selected_numbers = np.random.choice(lotto_numbers, 6, replace = False) # Randomly select 6 numbers from the set.
+    selected_numbers = np.random.choice(lotto_numbers, 6, replace = False, p = p) # Randomly select 6 numbers from the set.
     selected_numbers = np.sort(selected_numbers) # Sorted array
 
     return selected_numbers
@@ -63,11 +63,10 @@ def main():
 
     # Calculate the frequency of each number. In other words, how many times has each number been drawn previously?
     flattened_draws = list(itertools.chain(*draws)) # Flatten to convert to 1-D
-    df = pd.DataFrame(flattened_draws) # Create pandas DataFrame
+    df = pd.DataFrame(flattened_draws, columns = ['Numbers']) # Create pandas DataFrame
 
-    normalized = df.value_counts(normalize = True).sort_index()
-    lotto_numbers = normalized.index.tolist()
-    probabilities = normalized.values.tolist()
+    lotto_numbers = df['Numbers'].value_counts(normalize = True).sort_index().index.tolist()
+    probabilities = df['Numbers'].value_counts(normalize = True).sort_index().values.tolist()
 
     # Do a histogram to see numbers frequently drawn.
     fig = go.Figure(data = [go.Histogram(x = flattened_draws)])
