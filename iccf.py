@@ -129,14 +129,14 @@ def plot_hist(lags, cen_dist, pk_dist, save_output = True):
 
 def subset(ts):
 
-    t = np.random.choice(ts[0], ts.shape[1], replace = True)
+    sampled = np.random.choice(ts[0], ts.shape[1], replace = True)
     
-    t = np.unique(t)
+    sampled_unique = np.unique(sampled)
     
-    t = np.sort(t)
+    sampled_sorted = np.sort(sampled_unique)
     
-    idx_1 = np.searchsorted(ts[0], t, 'left')
-    idx_2 = np.searchsorted(ts[0], t, 'right')
+    idx_1 = np.searchsorted(ts[0], sampled_sorted, 'left')
+    idx_2 = np.searchsorted(ts[0], sampled_sorted, 'right')
     
     idx = idx_1[idx_1 != idx_2]
     
@@ -145,7 +145,7 @@ def subset(ts):
     
     ynew = np.random.normal(y, ye)
 
-    return np.array([t, ynew])
+    return np.array([sampled_sorted, ynew])
 
 def FR_RSS(ts1, ts2, t_start, t_end, tstep, iterations = None):
 
