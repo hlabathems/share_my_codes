@@ -178,7 +178,7 @@ def is_valid_directory(parser, arg):
     if not os.path.isdir(arg):
         parser.error('The directory {} does not exist!'.format(arg))
     else:
-        return glob.glob(arg + '/3C120*cont.txt') # Return continuum-subtracted spectra
+        return glob.glob(arg + '/*cont.txt') # Return continuum-subtracted spectra
 
 def main():
 
@@ -260,7 +260,7 @@ def main():
             print('#####Bin {} #####'.format(i + 1))
             print('Centroid Lag: {} (+{} -{})'.format(centau, centau_uperr, centau_loerr))
     
-        # H-beta lag from Table 5 of the paper
+        # H-beta lag
         tau = 21.6 # Average lag
         usig = tau + 1.6 # Upper uncertainty
         lsig = tau - 1.0 # lower uncertainty
@@ -277,20 +277,15 @@ def main():
             ax[1].plot(vspace, mean_spec / np.max(mean_spec), '-k', label = 'Mean')
             for idx in range(len(bin_edges)):
                 ax[1].axvline(x = bin_edges[idx], color = 'dimgray', ls = '--')
-            '''
-            for idx in range(nbins):
-                ax[1].text(bin_centers[idx], 0.1, '{:.2f}'.format(max_rvals[idx]), rotation = 90, fontsize = 'medium')
-            '''
+           
             ax[0].set_yticks([10, 20, 30])
-            #ax[0].set_ylim([0, 30])
-            #ax[0].axhline(y = 0, ls = '--', color = 'k')
             ax[1].set_xlim([bins[0], bins[-1]])
             ax[1].set_xlabel('Velocity (km/s)', fontsize = 'x-large')
             ax[0].set_ylabel(r'$\tau_{\mathrm{cent}}$ (days)', fontsize = 'x-large')
             ax[1].set_ylabel(r'$\overline{F}_{\lambda}$', fontsize = 'x-large')
             ax[0].legend(loc = 'upper right', fontsize = 'large')
             ax[1].legend(loc = 'upper right', fontsize = 'large')
-            plt.savefig('3C120_velocity-resolved.pdf', format = 'pdf', bbox_inches = 'tight', dpi = 1000)
+            
             plt.show()
     
 main()
