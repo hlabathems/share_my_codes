@@ -129,18 +129,6 @@ def phot_table(t, ms, mes):
 
     return pd.DataFrame(light_curves)
 
-# Check goodness of fit for constant-flux model of each star
-def goodness_of_fit(f, ferr):
-    m = ~np.isnan(f)
-    x, w = f[m], 1. / np.square(ferr[m])
-
-    xbar = np.sum(x * w) / np.sum(w)
-    res = x - xbar
-    dof = np.size(x) - 1
-    chisqr = np.sum(np.square(res))
-    
-    return chisqr / dof
-
 def reference_frame(y, idx_frame = None):
     if idx_frame is not None:
         ref_frame = np.array([row[idx_frame] for row in y])
